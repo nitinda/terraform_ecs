@@ -5,7 +5,7 @@ echo ECS_LOGLEVEL=debug >> /etc/ecs/ecs.config
 cat /etc/ecs/ecs.config
 
 # Install SSM Agent
-yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm ec2-instance-connect nfs-utils bind-utils
+yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm ec2-instance-connect nfs-utils bind-utils mysql
 
 # Updating the ECS agent
 # yum update -y ecs-init

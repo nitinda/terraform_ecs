@@ -36,46 +36,48 @@ module "aws_resources_module_iam_grafana" {
     "aws"  = "aws.aws_services"
   }
 
-  common_tags     = "${var.common_tags}"
-  aws_account_ids = {
+  common_tags       = "${var.common_tags}"
+  ecs_task_role_arn = "${module.aws_resources_module_iam_ecs.ecs_task_role_arn}"
+  aws_account_ids  = {
     default = "${data.aws_caller_identity.demo_caller_identity_current.account_id}"
   }
 }
 
 ########################## SSM Parameters
-# module "aws_resources_module_kms_ssm_parameters" {
-#   source = "../module_kms"
 
-#   common_tags        = "${var.common_tags}"
-#   kmy_key_alias_name = "alias/terraform-demo-kms-key-ssm-parameters"
-#   kmy_key_name       = "terraform-demo-kms-key-ssm-parameters"  
-# }
+module "aws_resources_module_kms_ssm_parameters" {
+  source = "../module_kms"
 
-# module "aws_resources_module_ssm_parameters_database_password" {
-#   source  = "../module_ssm_parameters"
+  common_tags        = "${var.common_tags}"
+  kmy_key_alias_name = "alias/terraform-demo-kms-key-ssm-parameters"
+  kmy_key_name       = "terraform-demo-kms-key-ssm-parameters"  
+}
 
-#   providers = {
-#     "aws"  = "aws.aws_services"
-#   }
+module "aws_resources_module_ssm_parameters_database_password" {
+  source  = "../module_ssm_parameters"
 
-#   common_tags = "${var.common_tags}"
-#   ssm_parameter_name  = "/grafana/terraform-demo-ssm-parameter-database-password"
-#   ssm_parameter_value = "asdaj1k23hjh1234fghj"
-#   kms_key_id          = "${module.aws_resources_module_kms_ssm_parameters.kms_key_arn}"
-# }
+  providers = {
+    "aws"  = "aws.aws_services"
+  }
 
-# module "aws_resources_module_ssm_parameters_grafana_password" {
-#   source  = "../module_ssm_parameters"
+  common_tags = "${var.common_tags}"
+  ssm_parameter_name  = "/grafana/terraform-demo-ssm-parameter-database-password"
+  ssm_parameter_value = "asdaj1k23hjh1234fghj"
+  kms_key_id          = "${module.aws_resources_module_kms_ssm_parameters.kms_key_arn}"
+}
 
-#   providers = {
-#     "aws"  = "aws.aws_services"
-#   }
+module "aws_resources_module_ssm_parameters_grafana_password" {
+  source  = "../module_ssm_parameters"
 
-#   common_tags = "${var.common_tags}"
-#   ssm_parameter_name  = "/grafana/terraform-demo-ssm-parameter-grafana-password"
-#   ssm_parameter_value = "asdaj1k23hjh1234fghj"
-#   kms_key_id          = "${module.aws_resources_module_kms_ssm_parameters.kms_key_arn}"
-# }
+  providers = {
+    "aws"  = "aws.aws_services"
+  }
+
+  common_tags = "${var.common_tags}"
+  ssm_parameter_name  = "/grafana/terraform-demo-ssm-parameter-grafana-password"
+  ssm_parameter_value = "asdaj1k23hjh1234fghj"
+  kms_key_id          = "${module.aws_resources_module_kms_ssm_parameters.kms_key_arn}"
+}
 
 
 
@@ -115,29 +117,29 @@ module "aws_resources_module_network" {
 
 ########################## RDS
 
-# module "aws_resources_module_rds_aurora_serverless_grafana" {
-#   source = "../module_rds_aurora_serverless"
+module "aws_resources_module_rds_aurora_serverless_grafana" {
+  source = "../module_rds_aurora_serverless"
   
-#   providers = {
-#     "aws"  = "aws.aws_services"
-#   }
+  providers = {
+    "aws"  = "aws.aws_services"
+  }
 
-#   common_tags     = "${var.common_tags}"
-#   vpc_id          = "${module.aws_resources_module_network.vpc_id}"
-#   db_subnet_ids   = "${module.aws_resources_module_network.db_subnet_ids}"
-#   web_subnet_cidr = "${module.aws_resources_module_network.web_subnet_cidr_blocks}"
+  common_tags     = "${var.common_tags}"
+  vpc_id          = "${module.aws_resources_module_network.vpc_id}"
+  db_subnet_ids   = "${module.aws_resources_module_network.db_subnet_ids}"
+  web_subnet_cidr = "${module.aws_resources_module_network.web_subnet_cidr_blocks}"
 
-#   db_instance_type                   = "db.t2.small"
-#   cluster_instance_identifier_name   = "terraform-demo-db-cluster-instance-identifier-grafana"
-#   db_subnet_group_name               = "terraform-demo-db-subnet-group-aurora-grafana"
-#   master_password                    = "${module.aws_resources_module_ssm_parameters_database_password.demo_ssm_parameter_value}"
-#   database_name                      = "grafana"
-#   auto_pause                         = true
-#   max_capacity                       = 8
-#   min_capacity                       = 1
-#   apply_immediately                  = true
-#   db_cluster_identifier_prefix       = "grafana"
-# }
+  db_instance_type                   = "db.t2.small"
+  cluster_instance_identifier_name   = "terraform-demo-db-cluster-instance-identifier-grafana"
+  db_subnet_group_name               = "terraform-demo-db-subnet-group-aurora-grafana"
+  master_password                    = "${module.aws_resources_module_ssm_parameters_database_password.ssm_parameter_value}"
+  database_name                      = "grafana"
+  auto_pause                         = true
+  max_capacity                       = 8
+  min_capacity                       = 1
+  apply_immediately                  = true
+  db_cluster_identifier_prefix       = "grafana"
+}
 
 
 
@@ -231,7 +233,12 @@ module "aws_resources_module_ecs_ec2_grafana_rds" {
   ecs_cluster_name            = "${module.aws_resources_module_ecs_cluster_ec2.ecs_cluster_name}"
   ecs_task_execution_role_arn = "${module.aws_resources_module_iam_ecs.ecs_task_execution_role_arn}"
   ecs_task_role_arn           = "${module.aws_resources_module_iam_ecs.ecs_task_role_arn}"
-  grafana_image_url           = "grafana/grafana:6.2.5"  
+  grafana_image_url           = "grafana/grafana:6.2.5"
+
+  rds_cluster_endpoint            = "${module.aws_resources_module_rds_aurora_serverless_grafana.rds_cluster_endpoint}"
+  grafana_database_password       = "${module.aws_resources_module_ssm_parameters_grafana_password.ssm_parameter_value}"
+  rds_cluster_database_name       = "${module.aws_resources_module_rds_aurora_serverless_grafana.rds_cluster_database_name}"
+  grafana_security_admin_password = "${module.aws_resources_module_ssm_parameters_grafana_password.ssm_parameter_value}"
 }
 
 

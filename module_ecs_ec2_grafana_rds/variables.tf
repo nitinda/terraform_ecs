@@ -35,3 +35,20 @@ variable "web_subnet_ids" {
 variable "vpc_id" {
   description = "The vpc id where grafana will be deployed"
 }
+
+variable "rds_cluster_endpoint" {
+  description = "description"
+}
+
+variable "grafana_database_password" {
+  description = "description"
+}
+
+variable "grafana_security_admin_password" {
+  description = "description"
+}
+
+
+variable "rds_cluster_database_name" {
+  description = "description"
+}

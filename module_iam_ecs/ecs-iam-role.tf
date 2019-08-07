@@ -158,6 +158,12 @@ resource "aws_iam_role_policy" "demo_iam_role_inline_policy_ecs_ec2" {
         "elasticfilesystem:UpdateFileSystem"
         ],
       "Resource": "*"
+    },
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "*"
     }
   ]
 }

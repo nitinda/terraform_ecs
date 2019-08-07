@@ -11,7 +11,7 @@ resource "aws_rds_cluster" "demo_rds_cluster_aurora_serverless" {
   db_subnet_group_name                = "${aws_db_subnet_group.demo_db_subnet_group_aurora.name}"
   vpc_security_group_ids              = ["${aws_security_group.demo_security_group_rds_aurora.id}"]
   db_cluster_parameter_group_name     = "${aws_rds_cluster_parameter_group.demo_rds_cluster_parameter_group_aurora.id}"
-  iam_database_authentication_enabled = true
+  iam_database_authentication_enabled = false
 
   scaling_configuration {
     auto_pause   = "${var.auto_pause}"

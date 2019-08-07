@@ -27,8 +27,13 @@ data "aws_iam_policy_document" "demo_iam_role_policy_document_grafana_assume" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${formatlist("arn:aws:iam::%s:root", values(var.aws_account_ids))}"]
+      identifiers = ["${var.ecs_task_role_arn}"]
     }
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+    
   }
 }
 
@@ -40,6 +45,8 @@ data "aws_iam_policy_document" "demo_iam_role_policy_document_grafana_aceess" {
     actions = [
       "cloudwatch:GetMetricStatistics",
       "cloudwatch:ListMetrics",
+      "cloudwatch:GetMetricStatistics",
+      "cloudwatch:GetMetricData"
     ]
 
     resources = ["*"]
@@ -52,6 +59,18 @@ data "aws_iam_policy_document" "demo_iam_role_policy_document_grafana_aceess" {
     actions = [
       "ec2:DescribeInstances",
       "ec2:DescribeTags",
+      "ec2:DescribeRegions"
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowReadingResourcesForTags"
+    effect = "Allow"
+
+    actions = [
+      "tag:GetResources"
     ]
 
     resources = ["*"]

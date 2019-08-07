@@ -24,6 +24,10 @@ data "aws_iam_policy_document" "demo_iam_policy_document_ec2_assume_role" {
       type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
+    # principals {
+    #   type        = "AWS"
+    #   identifiers = ["arn:aws:iam::735276988266:role/service-role/terraform-demo-iam-role-grafana-assume"]
+    # }
   }
 }
 
