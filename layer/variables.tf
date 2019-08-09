@@ -23,3 +23,12 @@ variable "ecs_cluster_fargate_name" {
   description = "description"
   default = "terraform-demo-ecs-cluster-fargate"
 }
+
+
+variable "new_aws_account_ids" {
+  description = "description"
+  type = "map"
+  default = {
+    Account-1 = "760341739473"
+  }
+}

@@ -3,8 +3,8 @@ resource "aws_rds_cluster" "demo_rds_cluster_aurora_serverless" {
   engine_mode                         = "serverless"
   database_name                       = "${var.database_name}"
   cluster_identifier                  = "${format("%s-rds-cluster", var.db_cluster_identifier_prefix)}"
-  master_username                     = "root"
-  master_password                     = "${var.master_password}"
+  master_username                     = "${var.rds_master_username}"
+  master_password                     = "${var.rds_master_password}"
   storage_encrypted                   = true
   skip_final_snapshot                 = true
   apply_immediately                   = "${var.apply_immediately}"

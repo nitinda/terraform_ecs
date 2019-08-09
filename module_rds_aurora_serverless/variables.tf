@@ -2,7 +2,11 @@ variable "database_name" {
   description = "description"
 }
 
-variable "master_password" {
+variable "rds_master_password" {
+  description = "description"
+}
+
+variable "rds_master_username" {
   description = "description"
 }
 

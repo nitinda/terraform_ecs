@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "demo_iam_policy_document_ecs_task_role" {
     sid       = "AllowAccessToAssumeGrafanaRole"
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["${formatlist("arn:aws:iam::%s:role/Grafana", values(var.aws_account_ids))}"]
+    resources = ["${formatlist("arn:aws:iam::%s:role/terraform-demo-iam-role-grafana-assume", values(var.aws_account_ids))}"]
   }
   statement {
     sid    = "DenyEverythingElse"

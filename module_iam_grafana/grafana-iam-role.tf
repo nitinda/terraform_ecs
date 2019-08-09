@@ -43,10 +43,9 @@ data "aws_iam_policy_document" "demo_iam_role_policy_document_grafana_aceess" {
     effect = "Allow"
 
     actions = [
-      "cloudwatch:GetMetricStatistics",
-      "cloudwatch:ListMetrics",
-      "cloudwatch:GetMetricStatistics",
-      "cloudwatch:GetMetricData"
+      "cloudwatch:Describe*",
+      "cloudwatch:Get*",
+      "cloudwatch:List*"
     ]
 
     resources = ["*"]
@@ -59,7 +58,14 @@ data "aws_iam_policy_document" "demo_iam_role_policy_document_grafana_aceess" {
     actions = [
       "ec2:DescribeInstances",
       "ec2:DescribeTags",
-      "ec2:DescribeRegions"
+      "ec2:DescribeRegions",
+      "ec2:DescribeSpotFleetInstances",
+      "ec2:DescribeInstances",
+      "ec2:DescribeReservedInstancesOfferings",
+      "ec2:DescribeFleetInstances",
+      "ec2:DescribeSpotInstanceRequests",
+      "ec2:DescribeReservedInstances",
+      "ec2:DescribeInstanceStatus"
     ]
 
     resources = ["*"]

@@ -2,11 +2,12 @@ resource "aws_autoscaling_group" "demo_ecs_autoscaling_group" {
     name                        = "terraform-demo-ecs-autoscaling-group"
     max_size                    = "5"
     min_size                    = "1"
-    desired_capacity            = "2"
+    desired_capacity            = "1"
     vpc_zone_identifier         = ["${var.web_subnet_ids}"]
     health_check_type           = "EC2"
     health_check_grace_period   = 0
     default_cooldown            = 0
+    force_delete                = true
     lifecycle {
         create_before_destroy = true
     }
